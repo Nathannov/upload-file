@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { parse } = require("csv-parse"); // compararing with 3 differents libreries (fast-csv, node-csv, csv-parse) this was the faster
 const { ShapeManager } = require("./shape_manager");
-const FileProcessorInterface = require("../interface/file_processor_interface");
+const FileProcessorInterface = require("../interfaces/file_processor_interface");
 const {openDataToRead, errorDataReadProcess, closeDataReadProcess} = require("../commons/utils");
 
 class CsvFileProcessor extends FileProcessorInterface {

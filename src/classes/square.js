@@ -1,4 +1,4 @@
-const { ShapeInterface } = require("../interface/shape_interfaces");
+const { ShapeInterface } = require("../interfaces/shape_interface");
 
 // this class override the methods created on shape interface
 class Square extends ShapeInterface {
