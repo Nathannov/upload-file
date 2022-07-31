@@ -13,7 +13,7 @@ class ShapeManager {
 				newShape = new Square(number);
 				break;
 			default:
-				console.error("This shape type is not implemented");
+				console.log("This shape type is not implemented");
 		}
 		return newShape;
 	}

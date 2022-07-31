@@ -8,14 +8,16 @@ class CsvFileProcessor extends FileProcessorInterface {
 
 	constructor(pathFile, shapeType) {
 		super(pathFile, shapeType);
+		this.processedOK = false;
 	}
 
 	async readStreamProcess() {
 		console.time("Time it took to process the file");
 		// to create a readable stream. Streams let you work with large amounts of data by allowing you to access it in chunks.
 		const stream = fs.createReadStream(this.pathFile);
-		await this.processFile(stream);
+		const processed = await this.processFile(stream);
 		console.timeEnd("Time it took to process the file");
+		return processed;
 	}
 
 	processFile(stream) {
@@ -29,12 +31,13 @@ class CsvFileProcessor extends FileProcessorInterface {
 					stream.pipe(parse({ from_line: 2 }))
 						.on("error", (error) => {
 							errorDataReadProcess(error.message);
+							reject(false);
 						})
 						.on("data", (row) => {
 							this.dataReadProcess(row, this.shapeType)
 						})
 						.on("end", () => {
-							resolve(true);
+							resolve(this.processedOK);
 						})
 						.on("close", closeDataReadProcess)
 				});
@@ -44,9 +47,11 @@ class CsvFileProcessor extends FileProcessorInterface {
 	dataReadProcess (row, shapeType) {
 		const sm = new ShapeManager(shapeType);
 		const shape = sm.createShape(+row[0]); //implicit conversion to number
-	
-		if (typeof shape === "object")
+		
+		if (typeof shape === "object"){
+			this.processedOK = true; 
 			console.log(shape.area());
+		}
 	}
 }
 

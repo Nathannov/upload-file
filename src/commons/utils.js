@@ -3,7 +3,7 @@ const openDataToRead = () => {
 }
 
 const errorDataReadProcess = (message) => {
-	console.error(message);
+	console.log(message);
 }
 
 const closeDataReadProcess = () => {
