@@ -7,7 +7,7 @@ class Square extends ShapeInterface {
 		this.length = length;
 	}
 
-	calculateArea() {
+	area() {
 		return Math.pow(this.length, 2);
 	}
 }

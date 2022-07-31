@@ -1,19 +1,19 @@
 const { Square } = require("./square");
 
-// this class allows adding new shape classes without affecting the already implemented ones
+// this class allows adding new shape type classes without affecting the already implemented ones
 class ShapeManager {
-	constructor(shape) {
-		this.shape = shape;
+	constructor(shape_type) {
+		this.shapeType = shape_type;
 	}
 
 	createShape(number) {
 		let newShape;
-		switch (this.shape) {
+		switch (this.shapeType) {
 			case "square":
 				newShape = new Square(number);
 				break;
 			default:
-				throw new Error("This shape is not implemented");
+				console.error("This shape type is not implemented");
 		}
 		return newShape;
 	}

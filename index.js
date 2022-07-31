@@ -1,30 +1,36 @@
 const fs = require("fs");
-const { parse } = require("csv-parse");
-const { ShapeManager } = require("./src/class_files/square");
-// get time here
+const { CsvFileProcessor } = require("./src/classes/csv_file_processor");
 
-// fs.createReadStream() to create a readable stream. Streams let you work with large amounts of data by allowing you to access it in chunks.
-const readStream = fs.createReadStream("./input.csv");
+//Index
+function checkFileExist(fileName, extention, shapeType) {
+  const fileNameExt = fileName + extention;
+  const pathFile = `./inputFiles/${fileNameExt}`;
 
-// This will wait until we know the readable stream is actually valid before piping
-readStream.on("open", () => { 
-  console.log("open");
-  // This just pipes the read stream to the response object (which goes to the client)
-  readStream.pipe(parse({ from_line: 2 }))
-    .on("error", function (error) {
-      console.log(error.message);
-    })
-    .on("data", function (row) {
-      //console.log(row);
-      const sm = new ShapeManager("square");
-      const shape = sm.createShape(+row[0]);
-      console.log(shape.calculateArea());
-    })
-    .on("end", function () {
-      console.log("end");
-    })
-    .on("close", () => {
-      // get time here
-      console.log("file processed");
-    })
-});
+  fs.access(pathFile, fs.F_OK, (err) => {
+    if (err) {
+      console.error("This file does not exist! Please checked out.");
+      return;
+    }
+
+    callFileProcessor(pathFile, extention, shapeType);
+  });
+}
+
+function callFileProcessor(pathFile, extention, shapeType) {
+  let fileProcessor;
+
+  switch (extention) {
+    case '.csv': {
+      fileProcessor = new CsvFileProcessor(pathFile, shapeType);
+      fileProcessor.readStreamProcess();
+      break;
+    }
+    default: {
+      console.error("There is not created a process for this file extention.");
+      return;
+    }
+  }
+}
+
+//Testing
+checkFileExist("input", ".csv", "square");
